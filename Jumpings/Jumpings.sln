@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jumpings", "Jumpings\Jumpings.csproj", "{F5CD1909-0004-4F31-9B56-B59E28BD16A4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5CD1909-0004-4F31-9B56-B59E28BD16A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5CD1909-0004-4F31-9B56-B59E28BD16A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5CD1909-0004-4F31-9B56-B59E28BD16A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5CD1909-0004-4F31-9B56-B59E28BD16A4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {43CA74D4-0B20-4F45-85E5-9B20873CFEFA}
+	EndGlobalSection
+EndGlobal
