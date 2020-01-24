@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Jumpings.Repos
 {
-    public abstract class BaseRepo<T> : IDisposable where T : class, new()
+    public abstract class BaseRepo<T> : IRepo<T>, IDisposable where T : class, new()
     {
-        public JumpingsContext Context { get; } = new JumpingsContext();
+        protected JumpingsContext Context;
         protected DbSet<T> Table;
 
         bool disposed = false;
@@ -23,7 +23,7 @@ namespace Jumpings.Repos
         {
             if (disposed)
                 return;
-            if(disposing)
+            if (disposing)
             {
                 Context.Dispose();
             }
@@ -89,15 +89,6 @@ namespace Jumpings.Repos
             return await SaveChangesAsync();
         }
 
-        public List<T> ExecuteQuery(string sql) => Table.SqlQuery(sql).ToList();
-
-        public Task<List<T>> ExecuteQueryAsync(string sql)
-            => Table.SqlQuery(sql).ToListAsync();
-        public List<T> ExecuteQuery(string sql, object[] sqlParametersObjects)
-            => Table.SqlQuery(sql, sqlParametersObjects).ToList();
-        public Task<List<T>> ExecuteQueryAsync(string sql, object[] sqlParametersObjects)
-            => Table.SqlQuery(sql).ToListAsync();
-
         internal int SaveChanges()
         {
             try
@@ -143,7 +134,33 @@ namespace Jumpings.Repos
             {
                 throw;
             }
-           
+
+        }
+
+        public int Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T GetOne(int? id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetOneAsync(int? id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<T> GetAll()
+        {
+            return Table.ToList();
+                
+        }
+
+        public async Task<List<T>> GetAllAsync()
+        {
+            return await Table.ToListAsync();
         }
     }
 
