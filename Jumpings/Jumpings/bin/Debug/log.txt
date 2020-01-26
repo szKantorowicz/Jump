@@ -1,2 +1,0 @@
-2020-01-20 22:26:26.0506|ERROR|Jumpings.Program|z³apano argument exception
-2020-01-20 22:26:40.7449|ERROR|Jumpings.Program|z³apano argument exception

@@ -40,6 +40,5 @@ namespace Jumpings
                 return jumpers;
             }
         }
-        
     }
 }

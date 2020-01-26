@@ -154,8 +154,7 @@ namespace Jumpings.Repos
 
         public List<T> GetAll()
         {
-            return Table.ToList();
-                
+            return Table.ToList();           
         }
 
         public async Task<List<T>> GetAllAsync()
