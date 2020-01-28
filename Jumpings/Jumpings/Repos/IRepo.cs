@@ -16,8 +16,8 @@ namespace Jumpings.Repos
         Task<int> SaveAsync(T entity);
         int Delete(int id);
         Task<int> DeleteAsync(T entity);
-        T GetOne(int? id);
-        Task<T> GetOneAsync(int? id);
+        T GetOne(int id);
+        Task<T> GetOneAsync(int id);
         List<T> GetAll();
         Task<List<T>> GetAllAsync();
     }

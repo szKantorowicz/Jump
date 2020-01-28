@@ -42,6 +42,46 @@ namespace Jumpings
             FirstName = firstName;
         }
 
+        public void SetLastName(string lastName)
+        {
+            if (string.IsNullOrEmpty(lastName))
+            {
+                throw new ArgumentException("Nazwisko nie może być puste.");
+            }
+
+            if (lastName.Length > 100)
+            {
+                throw new ArgumentException("Nazwisko nie może być dłuższe niż 100 znaków.");
+            }
+
+            if (LastName == lastName)
+            {
+                return;
+            }
+
+            LastName = lastName;
+        }
+
+        public void SetCountry(string country)
+        {
+            if (string.IsNullOrEmpty(country))
+            {
+                throw new ArgumentException("Nazwisko nie może być puste.");
+            }
+
+            if (country.Length > 100)
+            {
+                throw new ArgumentException("Nazwisko nie może być dłuższe niż 100 znaków.");
+            }
+
+            if (Country == country)
+            {
+                return;
+            }
+
+            Country = country;
+        }
+
         public override string ToString()
         {
             return $"{FirstName}, {LastName}, {Country}";

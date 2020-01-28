@@ -3,9 +3,6 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jumpings
 {
@@ -19,10 +16,10 @@ namespace Jumpings
 
             var jumpers = GetAllJumpers();
 
-            foreach(Jumper jumper in jumpers)
+            foreach (Jumper jumper in jumpers)
             {
                 Console.WriteLine(jumper.ToString());
-            }
+            }  
 
             Console.Read();
         }
@@ -34,7 +31,8 @@ namespace Jumpings
 
         private static List<Jumper> GetAllJumpers()
         {
-            using (var repo = new JumpRepo())
+            //var context = new JumpingsContext();
+            using (var repo = new JumperRepo(new JumpingsContext()))
             {
                 var jumpers = repo.GetAll();
                 return jumpers;
@@ -42,3 +40,4 @@ namespace Jumpings
         }
     }
 }
+ 

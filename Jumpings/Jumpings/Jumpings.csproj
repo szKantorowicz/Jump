@@ -69,8 +69,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repos\BaseRepo.cs" />
     <Compile Include="Repos\DataInitializer.cs" />
-    <Compile Include="Repos\JumpRepo.cs" />
+    <Compile Include="Repos\IJumperRepo.cs" />
+    <Compile Include="Repos\JumperRepo.cs" />
     <Compile Include="Repos\IRepo.cs" />
+    <Compile Include="Services\IJumperService.cs" />
+    <Compile Include="Services\IRandomDataService.cs" />
+    <Compile Include="Services\ITcpSenderService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

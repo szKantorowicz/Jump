@@ -3,31 +3,32 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using NLog;
+using NLog.Fluent;
 
 namespace Jumpings.Repos
 {
     public abstract class BaseRepo<T> : IRepo<T>, IDisposable where T : class, new()
     {
+        static Logger logger = LogManager.GetCurrentClassLogger();
         protected JumpingsContext Context;
         protected DbSet<T> Table;
 
         bool disposed = false;
-        public void Dispose()
+
+        public T GetOne(int id) => Table.Find(id);
+
+        public Task<T> GetOneAsync(int id) => Table.FindAsync(id);
+
+        public List<T> GetAll()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            return Table.ToList();
         }
-        public virtual void Dispose(bool disposing)
+
+        public async Task<List<T>> GetAllAsync()
         {
-            if (disposed)
-                return;
-            if (disposing)
-            {
-                Context.Dispose();
-            }
-            disposed = true;
+            return await Table.ToListAsync();
         }
 
         public int Add(T entity)
@@ -89,7 +90,14 @@ namespace Jumpings.Repos
             return await SaveChangesAsync();
         }
 
-        internal int SaveChanges()
+        public int Delete(int id)
+        {
+            Context.Entry(new Jumper() { ID = id }).State = EntityState.Deleted;
+            return SaveChanges();
+        }
+
+        // W blockach catch zamiast rzucania wyjątku dodać logowanie błędów
+        private int SaveChanges()
         {
             try
             {
@@ -97,22 +105,30 @@ namespace Jumpings.Repos
             }
             catch (DbUpdateConcurrencyException ex)
             {
+
+                logger.Error("DbUpdateConcurrencyException", ex);
                 throw;
+
             }
             catch (DbUpdateException ex)
             {
+                logger.Error("DbUpdateException", ex);
                 throw;
             }
             catch (CommitFailedException ex)
             {
+                logger.Error("CommitFailedException", ex);
                 throw;
             }
             catch (Exception ex)
             {
+                logger.Error("Exception", ex);
                 throw;
             }
         }
-        internal async Task<int> SaveChangesAsync()
+
+        // W blockach catch zamiast rzucania wyjątku dodać logowanie błędów
+        private async Task<int> SaveChangesAsync()
         {
             try
             {
@@ -120,46 +136,43 @@ namespace Jumpings.Repos
             }
             catch (DbUpdateConcurrencyException ex)
             {
+                logger.Error("DbUpdateConcurrencyException", ex);
                 throw;
             }
             catch (DbUpdateException ex)
             {
+                logger.Error("DbUpdateException", ex);
                 throw;
             }
             catch (CommitFailedException ex)
             {
+                logger.Error("CommitFailedException", ex);
                 throw;
             }
             catch (Exception ex)
             {
+                logger.Error("Exception", ex);
                 throw;
             }
-
         }
 
-        public int Delete(int id)
+        public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public T GetOne(int? id)
+        public virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
-        }
+            if (disposed)
+                return;
 
-        public Task<T> GetOneAsync(int? id)
-        {
-            throw new NotImplementedException();
-        }
+            if (disposing)
+            {
+                Context.Dispose();
+            }
 
-        public List<T> GetAll()
-        {
-            return Table.ToList();           
-        }
-
-        public async Task<List<T>> GetAllAsync()
-        {
-            return await Table.ToListAsync();
+            disposed = true;
         }
     }
 
