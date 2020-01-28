@@ -10,11 +10,13 @@ namespace Jumpings
     public class JumpingsContext : DbContext
     {
         public DbSet<Jumper> Jumper { get; set; }
+
         public JumpingsContext()
             : base("SkiJumpers")
         {
 
         }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new JumperConfiguration());

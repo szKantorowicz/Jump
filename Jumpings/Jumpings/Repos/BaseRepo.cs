@@ -5,21 +5,19 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using NLog;
-using NLog.Fluent;
 
 namespace Jumpings.Repos
 {
     public abstract class BaseRepo<T> : IRepo<T>, IDisposable where T : class, new()
     {
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger logger = LogManager.GetCurrentClassLogger(); // moze byc private readonly
         protected JumpingsContext Context;
         protected DbSet<T> Table;
-
-        bool disposed = false;
+        bool disposed = false; // może być prvate i nie mus byc inicjalizowane
 
         public T GetOne(int id) => Table.Find(id);
 
-        public Task<T> GetOneAsync(int id) => Table.FindAsync(id);
+        public Task<T> GetOneAsync(int id) => Table.FindAsync(id); // async await
 
         public List<T> GetAll()
         {
@@ -84,6 +82,12 @@ namespace Jumpings.Repos
             return SaveChanges();
         }
 
+        public Task<int> DeleteAsync(int id)
+        {
+            // todo async/await
+            throw new NotImplementedException();
+        }
+
         public async Task<int> DeleteAsync(T entity)
         {
             Context.Entry(entity).State = EntityState.Deleted;
@@ -92,7 +96,8 @@ namespace Jumpings.Repos
 
         public int Delete(int id)
         {
-            Context.Entry(new Jumper() { ID = id }).State = EntityState.Deleted;
+            var entity = GetOne(id);
+            Context.Entry(entity).State = EntityState.Deleted;
             return SaveChanges();
         }
 
@@ -106,25 +111,27 @@ namespace Jumpings.Repos
             catch (DbUpdateConcurrencyException ex)
             {
 
-                logger.Error("DbUpdateConcurrencyException", ex);
-                throw;
+                logger.Error("DbUpdateConcurrencyException", ex);// zamień kolejność parametrów i lepszy message
+                throw; // usuń
 
             }
             catch (DbUpdateException ex)
             {
-                logger.Error("DbUpdateException", ex);
-                throw;
+                logger.Error("DbUpdateException", ex);// zamień kolejność parametrów i lepszy message
+                throw;// usuń
             }
             catch (CommitFailedException ex)
             {
-                logger.Error("CommitFailedException", ex);
-                throw;
+                logger.Error("CommitFailedException", ex);// zamień kolejność parametrów i lepszy message
+                throw;// usuń
             }
             catch (Exception ex)
             {
-                logger.Error("Exception", ex);
-                throw;
+                logger.Error("Exception", ex);// zamień kolejność parametrów i lepszy message
+                throw;// usuń
             }
+
+            //return
         }
 
         // W blockach catch zamiast rzucania wyjątku dodać logowanie błędów
@@ -136,24 +143,26 @@ namespace Jumpings.Repos
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                logger.Error("DbUpdateConcurrencyException", ex);
-                throw;
+                logger.Error("DbUpdateConcurrencyException", ex);// zamień kolejność parametrów i lepszy message
+                throw;// usuń
             }
             catch (DbUpdateException ex)
             {
-                logger.Error("DbUpdateException", ex);
-                throw;
+                logger.Error("DbUpdateException", ex);// zamień kolejność parametrów i lepszy message
+                throw;// usuń
             }
             catch (CommitFailedException ex)
             {
-                logger.Error("CommitFailedException", ex);
-                throw;
+                logger.Error($"Został zgłoszony wyjątek {ex.GetType().Name}.", ex);// zamień kolejność parametrów i lepszy message
+                throw;// usuń
             }
             catch (Exception ex)
             {
-                logger.Error("Exception", ex);
-                throw;
+                logger.Error("Exception", ex);// zamień kolejność parametrów i lepszy message
+                throw;// usuń
             }
+
+            //return
         }
 
         public void Dispose()
@@ -162,6 +171,7 @@ namespace Jumpings.Repos
             GC.SuppressFinalize(this);
         }
 
+        // moze byc protected
         public virtual void Dispose(bool disposing)
         {
             if (disposed)

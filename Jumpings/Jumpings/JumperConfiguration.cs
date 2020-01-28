@@ -7,7 +7,6 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Jumpings
 {
-    
     public class JumperConfiguration : EntityTypeConfiguration<Jumper>
     {
         public JumperConfiguration()

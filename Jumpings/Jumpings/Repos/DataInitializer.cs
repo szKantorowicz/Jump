@@ -10,8 +10,7 @@ namespace Jumpings.Repos
 {
     public class DataInitializer : DropCreateDatabaseIfModelChanges<JumpingsContext>
     {
-        
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger logger = LogManager.GetCurrentClassLogger(); // private readonly
         // Całość ciała metody w block Try, Catch. Dodac wyjątek DataInitializeFailedException i wrzucić w catchu oraz zalogować wiadomość.
         protected override void Seed(JumpingsContext context)
         {
@@ -19,15 +18,15 @@ namespace Jumpings.Repos
             {
                 if (context == null)
                 {
-                    logger.Error("ArgumentNullException");
-                    throw new ArgumentNullException("nie może być pusty"); // todo wiadomosc
+                    throw new ArgumentNullException("Zmienna context nie możę być null'em.");
                 }
 
                 var isJumperExists = context.Jumper.Any();
 
                 if (isJumperExists)
                 {
-                    Console.WriteLine("Taki jumper już jest");
+                    // logger zamiast console logger.LogInfo()
+                    Console.WriteLine("Taki jumper już istnieje.");
                     return;
                 }
 
@@ -151,26 +150,33 @@ namespace Jumpings.Repos
                     new Jumper("Alex", "Insam", "Włochy"),
                 };
 
+                var transaction = context.Database.BeginTransaction();
+
+                jumpers.ForEach(jumper =>
+                {
+                    logger.Info($"Dodaje skoczka: {jumper.ToString()}.");
+                    context.Jumper.Add(jumper);
+                    logger.Info($"Pomyślnie dodano skoczka: {jumper.ToString()}.");
+                });
+
+                // przenies do JumpingContext i nazwij metodę CommitTransaction
+                // context.CommitTransaction(transaction)
                 try
                 {
-                    //tansaction
-                    
-                    jumpers.ForEach(jumper => context.Jumper.Add(jumper));
                     context.SaveChanges();
+                    transaction.Commit();
                 }
                 catch
                 {
-
-                    //rollback
+                    // todo logger nie udalo sie zapisac zmian
+                    transaction.Rollback();
                 }
-                //transaction.Commit();
-                //commit
             }
             catch (Exception ex)
             {
-                logger.Error("DataInitializerException");
+                logger.Error(ex, "DataInitializerException");
+                //throw new DataInitializerException("");
             }
-
         }
     }
 }
