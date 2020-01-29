@@ -8,23 +8,18 @@ namespace Jumpings
 {
     public class Jumper
     {
-        public int ID { get; set; }
-        // zmiana na private seta, ponieważ nie chcemy przypisywać wartości wprost
-        public string FirstName { get; set; }
-        // zmiana na private seta, ponieważ nie chcemy przypisywać wartości wprost
-        public string LastName { get; set; }
-        // zmiana na private seta, ponieważ nie chcemy przypisywać wartości wprost
-        public string Country { get; set; }
+        public int ID { get; private set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public string Country { get; private set; }
 
         public Jumper() { }
 
         public Jumper(string firstName, string lastName, string country)
         {
             SetFirstName(firstName);
-            // Użycie metody zamiast przypisania
-            LastName = lastName;
-            // Użycie metody zamiast przypisania
-            Country = country;
+            SetLastName(lastName);
+            SetCountry(country);
         }
 
         public void SetFirstName(string firstName)
@@ -71,14 +66,12 @@ namespace Jumpings
         {
             if (string.IsNullOrEmpty(country))
             {
-                // zmień na country
-                throw new ArgumentException("Nazwisko nie może być puste.");
+                throw new ArgumentException("Nazwa kraju nie może być puste.");
             }
 
             if (country.Length > 100)
             {
-                // zmień na country
-                throw new ArgumentException("Nazwisko nie może być dłuższe niż 100 znaków.");
+                throw new ArgumentException("Nazwa kraju nie może być dłuższe niż 100 znaków.");
             }
 
             if (Country == country)

@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataInitializerException.cs" />
     <Compile Include="JumpingsContext.cs" />
     <Compile Include="Jumper.cs" />
     <Compile Include="JumperConfiguration.cs" />
