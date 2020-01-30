@@ -8,15 +8,17 @@ namespace Jumpings
 {
     class Program
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         static void Main(string[] args)
         {
-            RegisterDataInitializers();
+            var jumpingsContext = new JumpingsContext();
+            DataInitialize(jumpingsContext);
 
-            var jumpers = GetAllJumpers();
+            var jumpers = GetAllJumpers(jumpingsContext);
 
             foreach (Jumper jumper in jumpers)
+
             {
                 Console.WriteLine(jumper.ToString());
             }  
@@ -24,19 +26,18 @@ namespace Jumpings
             Console.Read();
         }
 
-        private static void RegisterDataInitializers()
+        private static List<Jumper> GetAllJumpers(JumpingsContext jumpingsContext)
         {
-            Database.SetInitializer(new DataInitializer());
-        }
-
-        private static List<Jumper> GetAllJumpers()
-        {
-            //var context = new JumpingsContext();
-            using (var repo = new JumperRepo(new JumpingsContext()))
+            using (var repo = new JumperRepo(jumpingsContext))
             {
                 var jumpers = repo.GetAll();
                 return jumpers;
             }
+        }
+        private static void DataInitialize(JumpingsContext jumpingsContext)
+        {
+            IDataInitializer dataInitializer = new DataInitializer();
+            dataInitializer.InitializeData(jumpingsContext);
         }
     }
 }

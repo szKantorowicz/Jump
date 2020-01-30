@@ -17,8 +17,7 @@ namespace Jumpings
 
         public JumpingsContext()
             : base("SkiJumpers")
-        {
-
+        { 
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

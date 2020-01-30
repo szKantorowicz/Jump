@@ -8,11 +8,11 @@ using NLog;
 
 namespace Jumpings.Repos
 {
-    public class DataInitializer : DropCreateDatabaseIfModelChanges<JumpingsContext>
+    public class DataInitializer : IDataInitializer
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger(); 
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        protected override void Seed(JumpingsContext context)
+        public void InitializeData(JumpingsContext context)
         {
             try
             {
