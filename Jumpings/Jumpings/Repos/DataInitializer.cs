@@ -10,8 +10,8 @@ namespace Jumpings.Repos
 {
     public class DataInitializer : DropCreateDatabaseIfModelChanges<JumpingsContext>
     {
-        static Logger logger = LogManager.GetCurrentClassLogger(); // private readonly
-        // Całość ciała metody w block Try, Catch. Dodac wyjątek DataInitializeFailedException i wrzucić w catchu oraz zalogować wiadomość.
+        private readonly static Logger logger = LogManager.GetCurrentClassLogger(); 
+
         protected override void Seed(JumpingsContext context)
         {
             try
@@ -26,7 +26,7 @@ namespace Jumpings.Repos
                 if (isJumperExists)
                 {
                     // logger zamiast console logger.LogInfo()
-                    Console.WriteLine("Taki jumper już istnieje.");
+                    logger.Info("W bazie danych istnieje już taki skoczek");
                     return;
                 }
 
@@ -159,23 +159,13 @@ namespace Jumpings.Repos
                     logger.Info($"Pomyślnie dodano skoczka: {jumper.ToString()}.");
                 });
 
-                // przenies do JumpingContext i nazwij metodę CommitTransaction
-                // context.CommitTransaction(transaction)
-                try
-                {
-                    context.SaveChanges();
-                    transaction.Commit();
-                }
-                catch
-                {
-                    // todo logger nie udalo sie zapisac zmian
-                    transaction.Rollback();
-                }
+                context.CommitTransaction(transaction);
             }
+
             catch (Exception ex)
             {
-                logger.Error(ex, "DataInitializerException");
-                //throw new DataInitializerException("");
+                logger.Error(ex, $"Został zgłoszony wyjątek { ex.GetType().Name}.");
+                throw new DataInitializerFailedException("Zainicjowanie domyślnych danych nie powiodło się");
             }
         }
     }

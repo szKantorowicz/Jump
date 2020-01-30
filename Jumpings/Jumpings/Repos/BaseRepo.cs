@@ -10,14 +10,15 @@ namespace Jumpings.Repos
 {
     public abstract class BaseRepo<T> : IRepo<T>, IDisposable where T : class, new()
     {
-        static Logger logger = LogManager.GetCurrentClassLogger(); // moze byc private readonly
+        private readonly static Logger logger = LogManager.GetCurrentClassLogger(); 
+
         protected JumpingsContext Context;
         protected DbSet<T> Table;
-        bool disposed = false; // może być prvate i nie mus byc inicjalizowane
+        private bool disposed;
 
         public T GetOne(int id) => Table.Find(id);
 
-        public Task<T> GetOneAsync(int id) => Table.FindAsync(id); // async await
+        public async Task<T> GetOneAsync(int id) => await Table.FindAsync(id);
 
         public List<T> GetAll()
         {
@@ -82,10 +83,11 @@ namespace Jumpings.Repos
             return SaveChanges();
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            // todo async/await
-            throw new NotImplementedException();
+            var entity = await GetOneAsync(id);
+            Context.Entry(entity).State = EntityState.Deleted;
+            return await SaveChangesAsync();
         }
 
         public async Task<int> DeleteAsync(T entity)
@@ -101,7 +103,6 @@ namespace Jumpings.Repos
             return SaveChanges();
         }
 
-        // W blockach catch zamiast rzucania wyjątku dodać logowanie błędów
         private int SaveChanges()
         {
             try
@@ -111,30 +112,24 @@ namespace Jumpings.Repos
             catch (DbUpdateConcurrencyException ex)
             {
 
-                logger.Error("DbUpdateConcurrencyException", ex);// zamień kolejność parametrów i lepszy message
-                throw; // usuń
-
+                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (DbUpdateException ex)
             {
-                logger.Error("DbUpdateException", ex);// zamień kolejność parametrów i lepszy message
-                throw;// usuń
+                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (CommitFailedException ex)
             {
-                logger.Error("CommitFailedException", ex);// zamień kolejność parametrów i lepszy message
-                throw;// usuń
+                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (Exception ex)
             {
-                logger.Error("Exception", ex);// zamień kolejność parametrów i lepszy message
-                throw;// usuń
+                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
 
-            //return
+            return 0;
         }
 
-        // W blockach catch zamiast rzucania wyjątku dodać logowanie błędów
         private async Task<int> SaveChangesAsync()
         {
             try
@@ -143,26 +138,22 @@ namespace Jumpings.Repos
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                logger.Error("DbUpdateConcurrencyException", ex);// zamień kolejność parametrów i lepszy message
-                throw;// usuń
+                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (DbUpdateException ex)
             {
-                logger.Error("DbUpdateException", ex);// zamień kolejność parametrów i lepszy message
-                throw;// usuń
+                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (CommitFailedException ex)
             {
-                logger.Error($"Został zgłoszony wyjątek {ex.GetType().Name}.", ex);// zamień kolejność parametrów i lepszy message
-                throw;// usuń
+                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (Exception ex)
             {
-                logger.Error("Exception", ex);// zamień kolejność parametrów i lepszy message
-                throw;// usuń
+                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
 
-            //return
+            return 0;
         }
 
         public void Dispose()
@@ -171,8 +162,7 @@ namespace Jumpings.Repos
             GC.SuppressFinalize(this);
         }
 
-        // moze byc protected
-        public virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (disposed)
                 return;
