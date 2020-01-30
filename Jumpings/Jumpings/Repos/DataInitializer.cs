@@ -26,7 +26,7 @@ namespace Jumpings.Repos
                 if (isJumperExists)
                 {
                     // logger zamiast console logger.LogInfo()
-                    logger.Info("Taki skoczek już jest");
+                    logger.Info("W bazie danych istnieje już taki skoczek");
                     return;
                 }
 
@@ -159,14 +159,13 @@ namespace Jumpings.Repos
                     logger.Info($"Pomyślnie dodano skoczka: {jumper.ToString()}.");
                 });
 
-
                 context.CommitTransaction(transaction);
             }
 
-            catch (DataInitializerException ex)
+            catch (Exception ex)
             {
                 logger.Error(ex, $"Został zgłoszony wyjątek { ex.GetType().Name}.");
-                throw new DataInitializerException("Nie udało się storzyć bazy");
+                throw new DataInitializerFailedException("Zainicjowanie domyślnych danych nie powiodło się");
             }
         }
     }

@@ -66,12 +66,12 @@ namespace Jumpings
         {
             if (string.IsNullOrEmpty(country))
             {
-                throw new ArgumentException("Nazwa kraju nie może być puste.");
+                throw new ArgumentException("Nazwa kraju nie może być pusta.");
             }
 
             if (country.Length > 100)
             {
-                throw new ArgumentException("Nazwa kraju nie może być dłuższe niż 100 znaków.");
+                throw new ArgumentException("Nazwa kraju nie może być dłuższa niż 100 znaków.");
             }
 
             if (Country == country)

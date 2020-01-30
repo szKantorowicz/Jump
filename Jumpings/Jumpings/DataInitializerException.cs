@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Jumpings
 {
-    class DataInitializerException : Exception
+    public class DataInitializerFailedException : Exception
     {
-        public DataInitializerException(string message)
+        public DataInitializerFailedException(string message)
             : base(message) { }
     }
-
 }

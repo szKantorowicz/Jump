@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 using Jumpings.Repos;
 using NLog;
 
-
 namespace Jumpings
 {
     public class JumpingsContext : DbContext
     {
-        public DbSet<Jumper> Jumper { get; set; }
         private readonly static Logger logger = LogManager.GetCurrentClassLogger();
 
+        public DbSet<Jumper> Jumper { get; set; }
 
         public JumpingsContext()
             : base("SkiJumpers")
@@ -37,9 +36,8 @@ namespace Jumpings
             }
             catch
             {
-                logger.Info("nie można zapisać zmian");
+                logger.Info("Zapisanie zmian nie powiodło się");
                 transaction.Rollback();
-                throw;
             }
 
         }

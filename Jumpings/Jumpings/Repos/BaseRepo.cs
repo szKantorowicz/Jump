@@ -11,9 +11,10 @@ namespace Jumpings.Repos
     public abstract class BaseRepo<T> : IRepo<T>, IDisposable where T : class, new()
     {
         private readonly static Logger logger = LogManager.GetCurrentClassLogger(); 
+
         protected JumpingsContext Context;
         protected DbSet<T> Table;
-        private bool disposed = false; 
+        private bool disposed;
 
         public T GetOne(int id) => Table.Find(id);
 
@@ -84,7 +85,7 @@ namespace Jumpings.Repos
 
         public async Task<int> DeleteAsync(int id)
         {
-            var entity = GetOne(id);
+            var entity = await GetOneAsync(id);
             Context.Entry(entity).State = EntityState.Deleted;
             return await SaveChangesAsync();
         }
