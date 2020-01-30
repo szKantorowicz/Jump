@@ -73,9 +73,9 @@
     <Compile Include="Repos\IJumperRepo.cs" />
     <Compile Include="Repos\JumperRepo.cs" />
     <Compile Include="Repos\IRepo.cs" />
-    <Compile Include="Services\IJumperService.cs" />
-    <Compile Include="Services\IRandomDataService.cs" />
-    <Compile Include="Services\ITcpSenderService.cs" />
+    <Compile Include="Services\Base\IJumperService.cs" />
+    <Compile Include="Services\Base\IRandomDataService.cs" />
+    <Compile Include="Services\Base\ITcpSenderService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
