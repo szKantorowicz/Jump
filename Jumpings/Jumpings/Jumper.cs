@@ -8,18 +8,18 @@ namespace Jumpings
 {
     public class Jumper
     {
-        public int ID { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Country { get; set; }
+        public int ID { get; private set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public string Country { get; private set; }
 
         public Jumper() { }
 
         public Jumper(string firstName, string lastName, string country)
         {
             SetFirstName(firstName);
-            LastName = lastName;
-            Country = country;
+            SetLastName(lastName);
+            SetCountry(country);
         }
 
         public void SetFirstName(string firstName)
@@ -66,12 +66,12 @@ namespace Jumpings
         {
             if (string.IsNullOrEmpty(country))
             {
-                throw new ArgumentException("Nazwisko nie może być puste.");
+                throw new ArgumentException("Nazwa kraju nie może być pusta.");
             }
 
             if (country.Length > 100)
             {
-                throw new ArgumentException("Nazwisko nie może być dłuższe niż 100 znaków.");
+                throw new ArgumentException("Nazwa kraju nie może być dłuższa niż 100 znaków.");
             }
 
             if (Country == country)

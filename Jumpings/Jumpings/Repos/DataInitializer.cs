@@ -10,24 +10,22 @@ namespace Jumpings.Repos
 {
     public class DataInitializer : DropCreateDatabaseIfModelChanges<JumpingsContext>
     {
-        
-        static Logger logger = LogManager.GetCurrentClassLogger();
-        // Całość ciała metody w block Try, Catch. Dodac wyjątek DataInitializeFailedException i wrzucić w catchu oraz zalogować wiadomość.
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger(); 
+
         protected override void Seed(JumpingsContext context)
         {
             try
             {
                 if (context == null)
                 {
-                    logger.Error("ArgumentNullException");
-                    throw new ArgumentNullException("nie może być pusty"); // todo wiadomosc
+                    throw new ArgumentNullException("Zmienna context nie możę być null'em.");
                 }
 
                 var isJumperExists = context.Jumper.Any();
 
                 if (isJumperExists)
                 {
-                    Console.WriteLine("Taki jumper już jest");
+                    Logger.Info("W bazie danych istnieje już taki skoczek");
                     return;
                 }
 
@@ -151,26 +149,23 @@ namespace Jumpings.Repos
                     new Jumper("Alex", "Insam", "Włochy"),
                 };
 
-                try
-                {
-                    //tansaction
-                    
-                    jumpers.ForEach(jumper => context.Jumper.Add(jumper));
-                    context.SaveChanges();
-                }
-                catch
-                {
+                var transaction = context.Database.BeginTransaction();
 
-                    //rollback
-                }
-                //transaction.Commit();
-                //commit
+                jumpers.ForEach(jumper =>
+                {
+                    Logger.Info($"Dodaje skoczka: {jumper.ToString()}.");
+                    context.Jumper.Add(jumper);
+                    Logger.Info($"Pomyślnie dodano skoczka: {jumper.ToString()}.");
+                });
+
+                context.CommitTransaction(transaction);
             }
+
             catch (Exception ex)
             {
-                logger.Error("DataInitializerException");
+                Logger.Error(ex, $"Został zgłoszony wyjątek { ex.GetType().Name}.");
+                throw new DataInitializerFailedException("Zainicjowanie domyślnych danych nie powiodło się");
             }
-
         }
     }
 }

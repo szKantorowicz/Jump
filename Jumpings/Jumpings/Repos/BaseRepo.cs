@@ -5,21 +5,20 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using NLog;
-using NLog.Fluent;
 
 namespace Jumpings.Repos
 {
     public abstract class BaseRepo<T> : IRepo<T>, IDisposable where T : class, new()
     {
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger(); 
+
         protected JumpingsContext Context;
         protected DbSet<T> Table;
-
-        bool disposed = false;
+        private bool disposed;
 
         public T GetOne(int id) => Table.Find(id);
 
-        public Task<T> GetOneAsync(int id) => Table.FindAsync(id);
+        public async Task<T> GetOneAsync(int id) => await Table.FindAsync(id);
 
         public List<T> GetAll()
         {
@@ -84,6 +83,13 @@ namespace Jumpings.Repos
             return SaveChanges();
         }
 
+        public async Task<int> DeleteAsync(int id)
+        {
+            var entity = await GetOneAsync(id);
+            Context.Entry(entity).State = EntityState.Deleted;
+            return await SaveChangesAsync();
+        }
+
         public async Task<int> DeleteAsync(T entity)
         {
             Context.Entry(entity).State = EntityState.Deleted;
@@ -92,11 +98,11 @@ namespace Jumpings.Repos
 
         public int Delete(int id)
         {
-            Context.Entry(new Jumper() { ID = id }).State = EntityState.Deleted;
+            var entity = GetOne(id);
+            Context.Entry(entity).State = EntityState.Deleted;
             return SaveChanges();
         }
 
-        // W blockach catch zamiast rzucania wyjątku dodać logowanie błędów
         private int SaveChanges()
         {
             try
@@ -106,28 +112,24 @@ namespace Jumpings.Repos
             catch (DbUpdateConcurrencyException ex)
             {
 
-                logger.Error("DbUpdateConcurrencyException", ex);
-                throw;
-
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (DbUpdateException ex)
             {
-                logger.Error("DbUpdateException", ex);
-                throw;
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (CommitFailedException ex)
             {
-                logger.Error("CommitFailedException", ex);
-                throw;
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (Exception ex)
             {
-                logger.Error("Exception", ex);
-                throw;
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
+
+            return 0;
         }
 
-        // W blockach catch zamiast rzucania wyjątku dodać logowanie błędów
         private async Task<int> SaveChangesAsync()
         {
             try
@@ -136,24 +138,22 @@ namespace Jumpings.Repos
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                logger.Error("DbUpdateConcurrencyException", ex);
-                throw;
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (DbUpdateException ex)
             {
-                logger.Error("DbUpdateException", ex);
-                throw;
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (CommitFailedException ex)
             {
-                logger.Error("CommitFailedException", ex);
-                throw;
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (Exception ex)
             {
-                logger.Error("Exception", ex);
-                throw;
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
+
+            return 0;
         }
 
         public void Dispose()
@@ -162,7 +162,7 @@ namespace Jumpings.Repos
             GC.SuppressFinalize(this);
         }
 
-        public virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (disposed)
                 return;

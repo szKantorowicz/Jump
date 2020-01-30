@@ -14,7 +14,9 @@ namespace Jumpings.Repos
         Task<int> AddRangeAsync(IList<T> entities);
         int Save(T entities);
         Task<int> SaveAsync(T entity);
+        int Delete(T entity);
         int Delete(int id);
+        Task<int> DeleteAsync(int id);
         Task<int> DeleteAsync(T entity);
         T GetOne(int id);
         Task<T> GetOneAsync(int id);
