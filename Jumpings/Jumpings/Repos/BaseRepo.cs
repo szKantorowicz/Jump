@@ -10,7 +10,7 @@ namespace Jumpings.Repos
 {
     public abstract class BaseRepo<T> : IRepo<T>, IDisposable where T : class, new()
     {
-        private readonly static Logger logger = LogManager.GetCurrentClassLogger(); 
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger(); 
 
         protected JumpingsContext Context;
         protected DbSet<T> Table;
@@ -112,19 +112,19 @@ namespace Jumpings.Repos
             catch (DbUpdateConcurrencyException ex)
             {
 
-                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (DbUpdateException ex)
             {
-                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (CommitFailedException ex)
             {
-                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
 
             return 0;
@@ -138,19 +138,19 @@ namespace Jumpings.Repos
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (DbUpdateException ex)
             {
-                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (CommitFailedException ex)
             {
-                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
+                Logger.Error(ex, $"Został zgłoszony wyjątek {ex.GetType().Name}.");
             }
 
             return 0;

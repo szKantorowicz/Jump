@@ -11,7 +11,7 @@ namespace Jumpings
 {
     public class JumpingsContext : DbContext
     {
-        private readonly static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public DbSet<Jumper> Jumper { get; set; }
 
@@ -36,7 +36,7 @@ namespace Jumpings
             }
             catch
             {
-                logger.Info("Zapisanie zmian nie powiodło się");
+                Logger.Info("Zapisanie zmian nie powiodło się");
                 transaction.Rollback();
             }
 

@@ -10,7 +10,7 @@ namespace Jumpings.Repos
 {
     public class DataInitializer : DropCreateDatabaseIfModelChanges<JumpingsContext>
     {
-        private readonly static Logger logger = LogManager.GetCurrentClassLogger(); 
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger(); 
 
         protected override void Seed(JumpingsContext context)
         {
@@ -25,8 +25,7 @@ namespace Jumpings.Repos
 
                 if (isJumperExists)
                 {
-                    // logger zamiast console logger.LogInfo()
-                    logger.Info("W bazie danych istnieje już taki skoczek");
+                    Logger.Info("W bazie danych istnieje już taki skoczek");
                     return;
                 }
 
@@ -154,9 +153,9 @@ namespace Jumpings.Repos
 
                 jumpers.ForEach(jumper =>
                 {
-                    logger.Info($"Dodaje skoczka: {jumper.ToString()}.");
+                    Logger.Info($"Dodaje skoczka: {jumper.ToString()}.");
                     context.Jumper.Add(jumper);
-                    logger.Info($"Pomyślnie dodano skoczka: {jumper.ToString()}.");
+                    Logger.Info($"Pomyślnie dodano skoczka: {jumper.ToString()}.");
                 });
 
                 context.CommitTransaction(transaction);
@@ -164,7 +163,7 @@ namespace Jumpings.Repos
 
             catch (Exception ex)
             {
-                logger.Error(ex, $"Został zgłoszony wyjątek { ex.GetType().Name}.");
+                Logger.Error(ex, $"Został zgłoszony wyjątek { ex.GetType().Name}.");
                 throw new DataInitializerFailedException("Zainicjowanie domyślnych danych nie powiodło się");
             }
         }
