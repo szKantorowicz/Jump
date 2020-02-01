@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Jumpings.Services
 {
-    interface IRandomDataService
+    public interface IRandomDataService
     {
+        void RandomFall();
+        void RandomLength();
+        void RandomNote();
+        int SumResult();
+
     }
 }
