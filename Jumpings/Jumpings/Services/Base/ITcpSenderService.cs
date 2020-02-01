@@ -8,5 +8,7 @@ namespace Jumpings.Services
 {
     interface ITcpSenderService
     {
+        //sendmessage
+        
     }
 }

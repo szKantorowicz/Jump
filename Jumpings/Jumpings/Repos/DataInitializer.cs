@@ -25,7 +25,7 @@ namespace Jumpings.Repos
 
                 if (isJumperExists)
                 {
-                    Logger.Info("W bazie danych istnieje już taki skoczek");
+                    Logger.Info("Dane zostały już zainicjalizowane.");
                     return;
                 }
 

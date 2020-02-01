@@ -1,6 +1,10 @@
-﻿namespace Jumpings.Services.Base
+﻿using System.Collections.Generic;
+
+namespace Jumpings.Services.Base
 {
-    interface IJumperService
+    public interface IJumperService
     {
+        List<Jumper> GetAllJumpers(JumpingsContext jumpingsContext);
+        
     }
 }
