@@ -7,9 +7,16 @@ using System.Threading.Tasks;
 
 namespace Jumpings.Services.Base
 {
-    public class JumperService : IJumperService
+    public class JumperService : BaseRepo<Jumper>,IJumperService
     {
-        public JumperService() { }
+        private readonly JumpingsContext _context;
+
+
+        public JumperService(JumpingsContext _context) 
+        {
+            Context = _context;
+            Table = Context.Jumper;
+        }
         public List<Jumper> GetAllJumpers(JumpingsContext jumpingsContext)
         {
             using (var repo = new JumperRepo(jumpingsContext))

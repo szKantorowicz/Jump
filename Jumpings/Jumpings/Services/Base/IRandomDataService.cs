@@ -8,9 +8,9 @@ namespace Jumpings.Services
 {
     public interface IRandomDataService
     {
-        void RandomFall();
-        void RandomLength();
-        void RandomNote();
+        bool RandomFall();
+        int RandomLength();
+        int RandomNote();
         int SumResult();
 
     }

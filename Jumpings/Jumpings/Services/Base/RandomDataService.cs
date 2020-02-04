@@ -8,45 +8,53 @@ namespace Jumpings.Services.Base
 {
     public class RandomDataService : IRandomDataService
     {
-        public int fall;
+        public bool boolFall;
         public int length;
         public int note;
         public int sum;
 
-        public void RandomFall()
+        public bool RandomFall()
         {
-            int a = 0;
-            int b = 2;
+            int min = 0;
+            int max = 2;
             Random nrand = new Random();
-           fall = nrand.Next(a, b);
-
-        }
-
-        public void RandomLength()
-        {
-            int a = 100;
-            int b = 140;
-            Random nrand = new Random();
-            length = nrand.Next(a, b);
-
-        }
-
-        public void RandomNote()
-        {
-            int a = 0;
-            int b = 0;
-            if (fall == 1)
+            int fall = nrand.Next(min, max);
+            if (fall == 0)
             {
-                a = 1;
-                b = 12;
+                return boolFall = false;
             }
             else
             {
-                a = 13;
-                b = 20;
+                return boolFall = true;
+            }
+
+        }
+
+        public int RandomLength()
+        {
+            int min = 100;
+            int max = 140;
+            Random nrand = new Random();
+            return length = nrand.Next(min, max);
+
+        }
+
+        public int RandomNote()
+        {
+            int min = 0;
+            int max = 0;
+            if (boolFall == true)
+            {
+                min = 1;
+                max = 12;
+            }
+            else
+            {
+                min = 13;
+                max = 20;
             }
             Random nrand = new Random();
-            note = nrand.Next(a, b);
+            return note = nrand.Next(min, max);
         }
 
         public int SumResult()

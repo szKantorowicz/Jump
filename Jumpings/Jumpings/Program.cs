@@ -16,25 +16,22 @@ namespace Jumpings
         static void Main(string[] args)
         {
             
-            IRandomDataService rad = new RandomDataService();
+            IRandomDataService radomDataService = new RandomDataService();
             var jumpingsContext = new JumpingsContext();
             DataInitialize(jumpingsContext);
-            IJumperService jumperservice = new JumperService();
+            IJumperService jumperservice = new JumperService(jumpingsContext);
             
 
             var jumpers = jumperservice.GetAllJumpers(jumpingsContext);
 
             foreach (var jumper in jumpers)
             {
-
-               // Console.WriteLine("{0} {1}", jumper.ID, jumper.ToString());
-                rad.RandomFall();
-                rad.RandomLength();
-                rad.RandomNote();
-                //rad.SumResult();
-                Console.WriteLine("{0}  {1}  {2}", jumper.ID, jumper.ToString(),rad.SumResult());
-                //var message = new jumper result message
-                
+                radomDataService.RandomFall();
+                radomDataService.RandomLength();
+                radomDataService.RandomNote();
+                radomDataService.SumResult();
+                Console.WriteLine("{0}  {1}  {2}  {3}  {4}  {5}", jumper.ID, jumper.ToString(), radomDataService.SumResult(),
+                    radomDataService.RandomFall(), radomDataService.RandomLength(), radomDataService.RandomNote());
             }
             Console.Read();
 
