@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Jumpings.DTO;
 
-namespace Jumpings.Services
+namespace Jumpings.Services.Base
 {
     public interface IRandomDataService
     {
-        bool RandomFall();
-        int RandomLength();
-        int RandomNote();
-        int SumResult();
-
+        JumperResult GetResult();
     }
 }

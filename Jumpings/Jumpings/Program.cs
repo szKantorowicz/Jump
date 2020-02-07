@@ -15,30 +15,41 @@ namespace Jumpings
 
         static void Main(string[] args)
         {
-            
-            IRandomDataService radomDataService = new RandomDataService();
-            var jumpingsContext = new JumpingsContext();
-            DataInitialize(jumpingsContext);
-            IJumperService jumperservice = new JumperService(jumpingsContext);
-            
+            JumpingsContext jumpingsContext = new JumpingsContext();
+            IRandomDataService randomDataService = new RandomDataService();
+            IJumperService jumperService = new JumperService(new JumperRepo(jumpingsContext));
 
-            var jumpers = jumperservice.GetAllJumpers(jumpingsContext);
+            DataInitialize(jumpingsContext);
+
+            var jumpers = jumperService.GetAllJumpers();
+
+            if (jumpers.Count == 0)
+            {
+                // jakis console writeline, ze nie mona wyswietlic wynikow bo lista skoczkow jest pusta, read i thow
+            }
 
             foreach (var jumper in jumpers)
             {
-                radomDataService.RandomFall();
-                radomDataService.RandomLength();
-                radomDataService.RandomNote();
-                radomDataService.SumResult();
-                Console.WriteLine("{0}  {1}  {2}  {3}  {4}  {5}", jumper.ID, jumper.ToString(), radomDataService.SumResult(),
-                    radomDataService.RandomFall(), radomDataService.RandomLength(), radomDataService.RandomNote());
-            }
-            Console.Read();
+                var jumperResult = randomDataService.GetResult();
 
+                if (jumperResult == null)
+                {
+                    // jakis console writeline, ze nie mona wyswietlic wynikow dla skoczka o iminie i nazwisku
+                    continue;
+                }
+                
+                // todo 
+                Console.WriteLine("{0}  {1}  {2}  {3}  {4}  {5}", jumper.ID, jumper.ToString(), jumperResult.Note,
+                    jumperResult.Length, jumperResult.IsFall, jumperResult.Summary);
+            }
+            
+            Console.Read();
         }
         
         private static void DataInitialize(JumpingsContext jumpingsContext)
         {
+            // try catch zlapac DataInitialize 
+            // dla catcha z DataInitialize wypisac w consoli wiadomosc ze nie udalo sie zainicjalizowac danych, sproboj ponownie. Po nacisnieciu enter,m okno zostanie zamkniete Console.Read throw
             IDataInitializer dataInitializer = new DataInitializer();
             dataInitializer.InitializeData(jumpingsContext);
         }

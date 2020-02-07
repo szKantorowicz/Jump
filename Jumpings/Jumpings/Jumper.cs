@@ -8,11 +8,13 @@ namespace Jumpings
 {
     public class Jumper
     {
+        // Is required for EF
         public int ID { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string Country { get; private set; }
 
+        // Is required for EF
         public Jumper() { }
 
         public Jumper(string firstName, string lastName, string country)

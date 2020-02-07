@@ -63,12 +63,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataInitializerException.cs" />
+    <Compile Include="DTO\JumperResult.cs" />
     <Compile Include="JumpingsContext.cs" />
     <Compile Include="Jumper.cs" />
     <Compile Include="JumperConfiguration.cs" />
     <Compile Include="Migrations\202001242139002_InitialCreate.cs" />
     <Compile Include="Migrations\202001242139002_InitialCreate.designer.cs">
       <DependentUpon>202001242139002_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002071629101_Init.cs" />
+    <Compile Include="Migrations\202002071629101_Init.designer.cs">
+      <DependentUpon>202002071629101_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -79,11 +84,11 @@
     <Compile Include="Repos\IJumperRepo.cs" />
     <Compile Include="Repos\JumperRepo.cs" />
     <Compile Include="Repos\IRepo.cs" />
-    <Compile Include="Services\Base\JumperService.cs" />
     <Compile Include="Services\Base\IJumperService.cs" />
     <Compile Include="Services\Base\IRandomDataService.cs" />
     <Compile Include="Services\Base\ITcpSenderService.cs" />
-    <Compile Include="Services\Base\RandomDataService.cs" />
+    <Compile Include="Services\JumperService.cs" />
+    <Compile Include="Services\RandomDataService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -95,6 +100,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202001242139002_InitialCreate.resx">
       <DependentUpon>202001242139002_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002071629101_Init.resx">
+      <DependentUpon>202002071629101_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
