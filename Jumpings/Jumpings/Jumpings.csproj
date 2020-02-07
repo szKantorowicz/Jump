@@ -67,6 +67,7 @@
     <Compile Include="JumpingsContext.cs" />
     <Compile Include="Jumper.cs" />
     <Compile Include="JumperConfiguration.cs" />
+    <Compile Include="Messages\JumpResultMessage.cs" />
     <Compile Include="Migrations\202001242139002_InitialCreate.cs" />
     <Compile Include="Migrations\202001242139002_InitialCreate.designer.cs">
       <DependentUpon>202001242139002_InitialCreate.cs</DependentUpon>
@@ -86,9 +87,10 @@
     <Compile Include="Repos\IRepo.cs" />
     <Compile Include="Services\Base\IJumperService.cs" />
     <Compile Include="Services\Base\IRandomDataService.cs" />
-    <Compile Include="Services\Base\ITcpSenderService.cs" />
+    <Compile Include="Services\Base\ISenderService.cs" />
     <Compile Include="Services\JumperService.cs" />
     <Compile Include="Services\RandomDataService.cs" />
+    <Compile Include="Services\SenderService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

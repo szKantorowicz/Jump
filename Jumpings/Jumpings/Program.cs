@@ -25,7 +25,9 @@ namespace Jumpings
 
             if (jumpers.Count == 0)
             {
-                // jakis console writeline, ze nie mona wyswietlic wynikow bo lista skoczkow jest pusta, read i thow
+                Console.WriteLine("Nie można wczytać bazy bo lista jest pusta");
+                Console.Read();
+                throw new Exception();
             }
 
             foreach (var jumper in jumpers)
@@ -34,28 +36,45 @@ namespace Jumpings
 
                 if (jumperResult == null)
                 {
-                    // jakis console writeline, ze nie mona wyswietlic wynikow dla skoczka o iminie i nazwisku
+                    Console.WriteLine("Nie można wyświetlić skoczka o imiu {0} i nazwisku {1} ", jumper.FirstName, jumper.LastName);
                     continue;
                 }
-                
-                // todo 
+                Console.WriteLine("Przygotowuje się do skoku");
+                Console.WriteLine("Wystartował");
+                if(jumperResult.IsFall==false && jumperResult.Length>115)
+                {
+                    Console.WriteLine("Piękny skok.");
+                }
+                if(jumperResult.IsFall== true && jumperResult.Length>115)
+                {
+                    Console.WriteLine("Dobry skok ale nieustany.");
+                }
+                else
+                {
+                    Console.WriteLine("Słaby skok");
+                }
+
                 Console.WriteLine("{0}  {1}  {2}  {3}  {4}  {5}", jumper.ID, jumper.ToString(), jumperResult.Note,
                     jumperResult.Length, jumperResult.IsFall, jumperResult.Summary);
             }
-            
+
             Console.Read();
         }
-        
+
         private static void DataInitialize(JumpingsContext jumpingsContext)
         {
-            // try catch zlapac DataInitialize 
-            // dla catcha z DataInitialize wypisac w consoli wiadomosc ze nie udalo sie zainicjalizowac danych, sproboj ponownie. Po nacisnieciu enter,m okno zostanie zamkniete Console.Read throw
-            IDataInitializer dataInitializer = new DataInitializer();
-            dataInitializer.InitializeData(jumpingsContext);
+            try
+            {
+                IDataInitializer dataInitializer = new DataInitializer();
+                dataInitializer.InitializeData(jumpingsContext);
+            }
+            catch (DataInitializerFailedException ex)
+            {
+                Console.WriteLine("Nie można zainicjalizować danych, należy spróbwać ponownie.");
+                Console.Read();
+                throw ex;
+            }
         }
-
-        // send jumper result message
-        // var message = new jumper result message
     }
 }
  
