@@ -25,37 +25,40 @@ namespace Jumpings
 
             if (jumpers.Count == 0)
             {
-                Console.WriteLine("Nie można wczytać bazy bo lista jest pusta");
+                Console.WriteLine("Nie można wczytać skoczków, ponieważ lista jest pusta");
                 Console.Read();
-                throw new Exception();
+                Environment.Exit(0);
             }
 
             foreach (var jumper in jumpers)
             {
+                Console.Read();
+
                 var jumperResult = randomDataService.GetResult();
 
                 if (jumperResult == null)
                 {
-                    Console.WriteLine("Nie można wyświetlić skoczka o imiu {0} i nazwisku {1} ", jumper.FirstName, jumper.LastName);
+                    Console.WriteLine($"Nie można wyświetlić skoczka o imiu {jumper.FirstName} i nazwisku {jumper.LastName}.");
                     continue;
                 }
+
                 Console.WriteLine("Przygotowuje się do skoku");
                 Console.WriteLine("Wystartował");
-                if(jumperResult.IsFall==false && jumperResult.Length>115)
+
+                if (!jumperResult.IsFall && jumperResult.Length > 115)
                 {
                     Console.WriteLine("Piękny skok.");
                 }
-                if(jumperResult.IsFall== true && jumperResult.Length>115)
+                else if (jumperResult.IsFall && jumperResult.Length > 115)
                 {
                     Console.WriteLine("Dobry skok ale nieustany.");
                 }
                 else
                 {
-                    Console.WriteLine("Słaby skok");
+                    Console.WriteLine("Słaby skok.");
                 }
 
-                Console.WriteLine("{0}  {1}  {2}  {3}  {4}  {5}", jumper.ID, jumper.ToString(), jumperResult.Note,
-                    jumperResult.Length, jumperResult.IsFall, jumperResult.Summary);
+                Console.WriteLine($"Skoczek: {jumper.ToString()} Nota: {jumperResult.Note} Długość skoku: {jumperResult.Length} Upadek: {jumperResult.IsFall} Wynik końcowy: {jumperResult.Summary}");         
             }
 
             Console.Read();
@@ -70,11 +73,10 @@ namespace Jumpings
             }
             catch (DataInitializerFailedException ex)
             {
-                Console.WriteLine("Nie można zainicjalizować danych, należy spróbwać ponownie.");
+                Console.WriteLine($"Nie można zainicjalizować danych, należy spróbwać ponownie, aplikacja zostanie zamknięta po naciśnięciu ENTER. {ex.Message}");
                 Console.Read();
-                throw ex;
+                Environment.Exit(0);
             }
         }
     }
 }
- 
